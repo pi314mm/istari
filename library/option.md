@@ -33,8 +33,8 @@ A simpler case-analysis operation:
                 = def:option_case
                 imp:option_case
 
-    option_case _ _ (None _) n _ --> n
-    option_case _ _ (Some _ x) _ s --> s x
+    option_case None n _ --> n
+    option_case Some x _ s --> s x
 
 Options are covariant:
 
@@ -47,29 +47,29 @@ Options are covariant:
          = def:bind
          imp:bind
 
-    bind _ b (None _) _ --> None b
-    bind _ _ (Some _ x) f --> f x
+    bind None _ --> None
+    bind (Some x) f --> f x
 
 
     join : type:join
          = def:join
          imp:join
 
-    join a (None _) --> None a
-    join _ (Some _ l) --> l
+    join None --> None
+    join (Some l) --> l
 
 
     map : type:map
          = def:map
          imp:map
 
-    map _ b (None _) _ --> None b
-    map _ b (Some _ x) f --> Some b (f x)
+    map None _ --> None
+    map (Some x) f --> Some (f x)
 
 
     valof : type:valof
          = def:valof
          imp:valof
 
-    valof _ (None _) x --> x
-    valof _ (Some _ x) --> x
+    valof None x --> x
+    valof (Some x) y --> x

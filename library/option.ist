@@ -20,39 +20,38 @@ val option = parseConstant /option/;
 
 
 
-define /option_case {a b} l mnone msome/
+define /option_case l mnone msome/
 /
-  option_iter a (fn _ . b) mnone msome l
+  option_iter unit (fn _ . unit) mnone msome l
 //
-  intersect i . 
-  forall (a b : U i) .
+  intersect i (a b : U i) .
     option a
     -> b
     -> (a -> b)
     -> b
 /;
-
 inference.
+introOf /i a b l mnone msome/.
 unfold /option_case/.
-typecheck.
-qed ();
+destruct /l/ /{ | l}/ >> reduce // >> auto.
+qed();
 
 
 
 reductions
 /
-  option_case _ _ (None) n _ --> n ;
-  option_case _ _ (Some x) _ s --> s x ;
+  option_case (None) n _ --> n ;
+  option_case (Some x) _ s --> s x ;
   unfolding option_case
 /;
 
 
 
-define /bind {a b} l f/
+define /bind l f/
 /
   option_case l None (fn x . f x)
 //
-  intersect i . forall (a b : U i) . option a -> (a -> option b) -> option b
+  intersect i (a b : U i) . option a -> (a -> option b) -> option b
 /;
 
 inference.
@@ -64,18 +63,18 @@ qed ();
 
 reductions
 /
-  bind _ b (None) _ --> None ;
-  bind _ _ (Some x) f --> f x ;
+  bind (None) _ --> None ;
+  bind (Some x) f --> f x ;
   unfolding bind
 /;
 
 
 
-define /join {a} l/
+define /join l/
 /
   bind l (fn x . x)
 //
-  intersect i . forall (a : U i) . option (option a) -> option a
+  intersect i (a : U i) . option (option a) -> option a
 /;
 
 inference.
@@ -87,18 +86,18 @@ qed ();
 
 reductions
 /
-  join a (None) --> None ;
-  join _ (Some l) --> l ;
+  join (None) --> None ;
+  join (Some l) --> l ;
   unfolding join
 /;
 
 
 
-define /map {a b} f l/
+define /map f l/
 /
   bind l (fn x . Some (f x))
 //
-  intersect i . forall (a b : U i) . (a -> b) -> option a -> option b
+  intersect i (a b : U i) . (a -> b) -> option a -> option b
 /;
 
 inference.
@@ -110,18 +109,18 @@ qed ();
 
 reductions
 /
-  map _ b _ (None) --> None ;
-  map _ b f (Some x) --> Some (f x) ;
+  map _ (None) --> None ;
+  map f (Some x) --> Some (f x) ;
   unfolding map
 /;
 
 
 
-define /valof {a} l x/
+define /valof l x/
 /
   option_case l x (fn y . y)
 //
-  intersect i . forall (a : U i) . option a -> a -> a
+  intersect i (a : U i) . option a -> a -> a
 /;
 
 inference.
@@ -133,8 +132,8 @@ qed ();
 
 reductions
 /
-  valof _ (None) x --> x ;
-  valof _ (Some x) _ --> x ;
+  valof (None) x --> x ;
+  valof (Some x) _ --> x ;
   unfolding valof
 /;
 
