@@ -1,5 +1,7 @@
 
 Ctrl.use "datatypes.iml";
+File.import "miscellaneous-load.iml";
+File.import "option-aux.iml";
 
 beginModule "Option";
 
@@ -22,7 +24,7 @@ val option = parseConstant /option/;
 
 define /option_case l mnone msome/
 /
-  option_iter unit (fn _ . unit) mnone msome l
+  option_iter Miscellaneous.bogus Miscellaneous.bogus mnone msome l
 //
   intersect i (a b : U i) .
     option a
