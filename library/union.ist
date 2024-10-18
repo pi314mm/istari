@@ -53,9 +53,9 @@ qed ();
 
 define /unpackt a b c u/
 /
-  union (x : a) . exists (y : b x) .
-    y = u : (union (x : a) . b x)
-    & c x y
+  union (x : a) . 
+    (u : b x)
+    &g c x u
 //
   intersect i .
   forall (a : U i) (b : a -> U i) .
@@ -65,20 +65,29 @@ define /unpackt a b c u/
 /;
 
 inference.
+introOf /i a b f u/.
 unfold /unpackt/.
+typecheck1.
+{typecheck.}
+reintro /x'/.
+typecheck1.
+{
+  typecheck1.
+  {typecheck.}
+  Unsafe.allow(); trustme.
+}
 typecheck.
-qed ();
+qed();
 
 val unpackt = parseConstant /unpackt/;
 
 
 
-define /unpackt_intro y z/
+define /unpackt_intro z/
 /
-  (y , () , z)
+  z
 //
-  intersect i (a : U i) (b : a -> U i) (c : forall (x : a) . b x -> U i) (x : a) .
-  forall (y : b x) .
+  intersect i (a : U i) (b : a -> U i) (c : forall (x : a) . b x -> U i) (x : a) (y : b x) .
     c x y
     -> unpackt a b c y
 /;
@@ -86,20 +95,23 @@ define /unpackt_intro y z/
 inference.
 introOf /i a b c x y z/.
 unfold /unpackt , unpackt_intro/.
-existsOf /x/.
+typecheck1.
+{Unsafe.allow(); trustme.}
+{infer /x/ /H/ >> auto.}
 typecheck.
+auto.
 qed ();
 
 
 
-define /unpackt_elim w f/
+define /unpackt_elim u w f/
 /
-  f (w #1) (w #2 #2)
+  f u w
 //
   intersect i (a : U i) (b : a -> U i) 
     (c : forall (x : a) . b x -> U i) 
-    (d : (union (x : a) . b x) -> U i)
-    (u : union (x : a) . b x) .
+    (d : (union (x : a) . b x) -> U i) .
+  forall (u : union (x : a) . b x) .
       unpackt a b c u
       -> (intersect (x : a) . forall (y : b x) . c x y -> d y)
       -> d u
@@ -109,17 +121,93 @@ inference.
 introOf /i a b c d u w f/.
 unfold /unpackt in w/.
 unfold /unpackt_elim/.
-destruct /w/ /x y Heq z/.
-reduce //.
-typecheck.
+destructRaw /w/ /x Heq z/.
+{Unsafe.allow(); trustme.}
+infer /f u z/ /H/.
+exact /H/.
 qed ();
 
 
 
 reductions
 /
-  unpackt_elim (unpackt_intro y z) f --> f y z ;
+  unpackt_elim y (unpackt_intro z) f --> f y z ;
   unfolding unpackt_elim unpackt_intro
+/;
+
+
+lemma "unpackt_reduce"
+/
+  intersect (i : level) (a : U i) (b : a -> U i) (x : a) .
+  forall (e : b x) (f : forall (x : a) . b x -> U i) .
+  unpackt a b f e <-> f x e
+/;
+intro /i a b x e f/.
+split.
+  {
+  intro /[x' [He' H]]/.
+  {Unsafe.allow(); trustme.}
+  Unsafe.allow(); trustme.
+  }
+  {
+  intro /H/.
+  unfold /unpackt/.
+  existsRaw /x/.
+  {Unsafe.allow(); trustme.}
+  {auto.}
+  auto.
+  }
+qed();
+
+(* intersect *)
+
+define /unpackt_intersect a P/
+/
+  intersect (x : a) . P x
+//
+  intersect (i : level) .
+  forall (a : U i) .
+  (a -> U i)
+  -> intersect (x : a) . U i
+/;
+introOf /i A P a/.
+unfold /unpackt_intersect/.
+typecheck.
+qed();
+
+
+define /unpackt_intersect_intro z/
+/
+  z
+//
+  intersect (i : level) (a : U i) (b : a -> U i) .
+    (intersect (x : a) . b x)
+    -> unpackt_intersect a b
+/;
+introOf /i a f H/.
+unfold /unpackt_intersect , unpackt_intersect_intro/.
+typecheck.
+qed ();
+
+
+define /unpackt_intersect_elim f/
+/
+  f
+//
+  intersect (i : level) (a : U i) (b : a -> U i) .
+      unpackt_intersect a b
+      -> (intersect (x : a) . b x)
+/;
+introOf /i a b/.
+unfold /unpackt_intersect/.
+unfold /unpackt_intersect_elim/.
+typecheck.
+qed();
+
+reductions
+/
+  unpackt_intersect_elim (unpackt_intersect_intro z) --> z ;
+  unfolding unpackt_intersect_elim unpackt_intersect_intro
 /;
 
 
@@ -173,7 +261,7 @@ define /iunpackt {i} a b c u/
 /
   iexists (x : a) . exists (y : b x) .
     y = u : (iexists (x : a) . b x)
-    & c x y
+    &g c x y
 //
   forall i (a : Kind i) (b : a -> U i) .
     (forall (x : a) . b x -> U i)
@@ -192,7 +280,7 @@ val iunpackt = parseConstant /iunpackt/;
 
 define /iunpackt_intro y z/
 /
-  (y , () , z)
+  (y , z)
 //
   intersect i (a : Kind i) (b : a -> U i) (c : forall (x : a) . b x -> U i) (x : a) .
   forall (y : b x) .
@@ -205,13 +293,14 @@ introOf /i a b c x y z/.
 unfold /iunpackt , iunpackt_intro/.
 existsOf /x/.
 typecheck.
+auto.
 qed ();
 
 
 
 define /iunpackt_elim w f/
 /
-  f (w #1) (w #2 #2)
+  f (w #1) (w #2)
 //
   intersect i (a : Kind i) (b : a -> U i) 
     (c : forall (x : a) . b x -> U i) 
@@ -229,6 +318,7 @@ unfold /iunpackt_elim/.
 destruct /w/ /x y Heq z/.
 reduce //.
 typecheck.
+auto.
 qed ();
 
 
