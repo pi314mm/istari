@@ -601,12 +601,44 @@ auto.
 Qed.
 
 
-Hint Rewrite def_squash def_sigma def_univ : prepare.
+Lemma def_univ_surj_type :
+  forall (lv m : term obj),
+    equiv
+      (app Defs.squash
+         (app (app Defs.sigma (app Defs.univ lv))
+            (lam (app (app (app Defs.eq (app Defs.future (app Defs.univ (subst (sh 1) lv))))
+                         (subst (sh 1) m))
+                    (next (var 0))))))
+      (Defined.squash (sigma (univ lv) (equal (fut (univ (subst sh1 lv))) (subst sh1 m) (next (var 0))))).
+Proof.
+intros lv m.
+eapply equiv_trans; [apply def_squash |].
+unfold Defined.squash.
+apply equiv_set; [apply equiv_refl |].
+apply equiv_subst.
+eapply equiv_trans.
+  {
+  apply equiv_app; [apply equiv_app; [apply equiv_refl | apply def_univ] |].
+  apply equiv_lam.
+  eapply equiv_trans; [apply def_eq |].
+  apply equiv_equal; [| apply equiv_refl | apply equiv_refl].
+  eapply equiv_trans; [apply def_fut |].
+  apply equiv_fut.
+  apply def_univ.
+  }
+apply def_sigma.
+Qed.
 
 
 Lemma futureUnivSurj_valid : futureUnivSurj_obligation.
 Proof.
-prepare.
+unfoldtop.
+unfold Defs.dof.
 intros G lv m ext1 ext0 HC Hm.
+(* The type has defined constants under a binder, which prepare's
+   rewriting cannot reach, so it is converted as a whole first. *)
+rewrite -> def_univ_surj_type in HC |- *.
+prepare.
+intros G' lv' m' ext1' ext0' HC' Hm'.
 apply tr_fut_univ_surj; auto.
 Qed.
