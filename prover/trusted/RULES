@@ -2400,6 +2400,30 @@ promote |- B : type ;
 x : demote A |- future B ext M ;
 
 
+rule futureIntersectIntroOf
+next (M #prev) : future (intersect {x : A} B)
+>>
+promote |- A : type ;
+promote x : A |- B : type ;
+x : demote A |- M : future B ;
+
+
+rule futureIntersectIntroEq
+next (M #prev) = next (N #prev) : future (intersect {x : A} B)
+>>
+promote |- A : type ;
+promote x : A |- B : type ;
+x : demote A |- M = N : future B ;
+
+
+rule futureIntersectIntro
+future (intersect {x : A} B) ext next (M [() / x] #prev)
+>>
+promote |- A : type ;
+promote x : A |- B : type ;
+x : demote hide A |- future B ext M ;
+
+
 
 (* Recursive types *)
 

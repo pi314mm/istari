@@ -566,3 +566,36 @@ apply (tr_eqtype_convert _#3 (fut (tarrow a b))).
   }
 apply tr_fut_tarrow_intro; auto.
 Qed.
+
+
+Hint Rewrite def_intersect : prepare.
+
+
+Lemma futureIntersectIntroOf_valid : futureIntersectIntroOf_obligation.
+Proof.
+prepare.
+intros G a b m ext2 ext1 ext0 Ha Hb Hm.
+apply tr_fut_intersect_intro; auto.
+Qed.
+
+
+Lemma futureIntersectIntroEq_valid : futureIntersectIntroEq_obligation.
+Proof.
+prepare.
+intros G a b m n ext2 ext1 ext0 Ha Hb Hmn.
+apply tr_fut_intersect_intro; auto.
+Qed.
+
+
+Lemma futureIntersectIntro_valid : futureIntersectIntro_obligation.
+Proof.
+prepare.
+intros G a b ext1 ext0 m Hhyg Ha Hb Hm.
+apply tr_fut_intersect_intro; auto.
+simpsub.
+replace (subst (dot triv sh1) m) with m; auto.
+so (subst_into_absent_single _ _ _ triv Hhyg) as H.
+simpsubin H.
+symmetry.
+auto.
+Qed.

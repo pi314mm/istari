@@ -2285,6 +2285,30 @@ variables.  The official rules, using de Bruijn indices, are given
       promote(G) |- B : type
       G, x (later) : A |- future B ext M
 
+- `futureIntersectIntroOf A B M`
+
+      G |- next (M #prev) : future (intersect (x : A) . B)
+      >>
+      promote(G) |- A : type
+      promote(G), x : A |- B : type
+      G, x (later) : A |- M : future B
+
+- `futureIntersectIntroEq A B M N`
+
+      G |- next (M #prev) = next (N #prev) : future (intersect (x : A) . B)
+      >>
+      promote(G) |- A : type
+      promote(G), x : A |- B : type
+      G, x (later) : A |- M = N : future B
+
+- `futureIntersectIntro A B`
+
+      G |- future (intersect (x : A) . B) ext next ([() / x]M #prev)
+      >>
+      promote(G) |- A : type
+      promote(G), x : A |- B : type
+      G, x (later hidden) : A |- future B ext M
+
 
 
 ### Future functions

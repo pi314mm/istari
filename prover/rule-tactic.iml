@@ -351,6 +351,9 @@ signature RULE_TACTIC =
       val futureArrowIntroOf : tactic
       val futureArrowIntroEq : tactic
       val futureArrowIntro : tactic
+      val futureIntersectIntroOf : tactic
+      val futureIntersectIntroEq : tactic
+      val futureIntersectIntro : tactic
       val recKind : tactic
       val recKindEq : tactic
       val recForm : tactic
@@ -4279,6 +4282,45 @@ structure RuleTactic :> RULE_TACTIC =
                 idtac,
                 idtac,
                 chdir (D.bindsVary dir [NONE, ]),
+                ]
+         end
+
+      val futureIntersectIntroOf =
+         let
+            do () = lift
+            do (jud, dir) = withgoal
+         in
+            refine (Rule.futureIntersectIntroOf (T.evar ()) (T.evar ()) (T.evar ()))
+            >>> [
+                idtac,
+                chdir (D.bindsVary dir [binder [1, 1, 2, ] (J.concl jud), ]),
+                chdir (D.bindsVary dir [binder [1, 1, 2, ] (J.concl jud), ]),
+                ]
+         end
+
+      val futureIntersectIntroEq =
+         let
+            do () = lift
+            do (jud, dir) = withgoal
+         in
+            refine (Rule.futureIntersectIntroEq (T.evar ()) (T.evar ()) (T.evar ()) (T.evar ()))
+            >>> [
+                idtac,
+                chdir (D.bindsVary dir [binder [1, 1, 2, ] (J.concl jud), ]),
+                chdir (D.bindsVary dir [binder [1, 1, 2, ] (J.concl jud), ]),
+                ]
+         end
+
+      val futureIntersectIntro =
+         let
+            do () = lift
+            do (jud, dir) = withgoal
+         in
+            refine (Rule.futureIntersectIntro (T.evar ()) (T.evar ()))
+            >>> [
+                idtac,
+                chdir (D.bindsVary dir [binder [1, 2, ] (J.concl jud), ]),
+                chdir (D.bindsVary dir [binder [1, 2, ] (J.concl jud), ]),
                 ]
          end
 

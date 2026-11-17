@@ -451,6 +451,13 @@ Inductive tr : @context obj -> judgement -> Prop :=
       -> tr (cons (hyp_tml a) G) (deq m n (fut (subst sh1 b)))
       -> tr G (deq (next (lam (prev m))) (next (lam (prev n))) (fut (tarrow a b)))
 
+| tr_fut_intersect_intro :
+    forall G a b m n,
+      tr (promote G) (deqtype a a)
+      -> tr (cons (hyp_tm a) (promote G)) (deqtype b b)
+      -> tr (cons (hyp_tml a) G) (deq (subst sh1 m) (subst sh1 n) (fut b))
+      -> tr G (deq (next (prev m)) (next (prev n)) (fut (intersect a b)))
+
 (* Semifut *)
 
 | tr_semifut_formation :

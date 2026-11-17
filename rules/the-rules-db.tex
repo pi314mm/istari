@@ -3040,6 +3040,39 @@
 \]
 
 \[
+\infer[{\tt futureIntersectIntroOf}]{\Gamma \vdash {\sf next}\,(M\, {\sf prev}): {\sf future}\,({\sf intersect}\,A\,(\lambda .\,B))}{
+\begin{stack}
+\overline{\Gamma}\vdash A: {\sf type}
+\\
+\overline{\Gamma},A\vdash B: {\sf type}
+\\
+\Gamma ,\underline{A}\vdash M[\uparrow ]: {\sf future}\,B
+\end{stack}}
+\]
+
+\[
+\infer[{\tt futureIntersectIntroEq}]{\Gamma \vdash {\sf next}\,(M\, {\sf prev})= {\sf next}\,(N\, {\sf prev}): {\sf future}\,({\sf intersect}\,A\,(\lambda .\,B))}{
+\begin{stack}
+\overline{\Gamma}\vdash A: {\sf type}
+\\
+\overline{\Gamma},A\vdash B: {\sf type}
+\\
+\Gamma ,\underline{A}\vdash M[\uparrow ]= N[\uparrow ]: {\sf future}\,B
+\end{stack}}
+\]
+
+\[
+\infer[{\tt futureIntersectIntro}]{\Gamma \vdash {\sf future}\,({\sf intersect}\,A\,(\lambda .\,B))\:{\sf ext}\:{\sf next}\,(M[\star \,.\,{\sf id}]\, {\sf prev})}{
+\begin{stack}
+\overline{\Gamma}\vdash A: {\sf type}
+\\
+\overline{\Gamma},A\vdash B: {\sf type}
+\\
+\Gamma ,\underline{[A]}\vdash {\sf future}\,B\:{\sf ext}\:M
+\end{stack}}
+\]
+
+\[
 \infer[{\tt recKind}]{\Gamma \vdash {\sf rec}\,(\lambda .\,K): {\Bbb K}_{I}}{
 \begin{stack}
 \Gamma \vdash I: {\sf level}

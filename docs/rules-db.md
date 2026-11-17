@@ -2283,6 +2283,30 @@ Human-readable rules, using explicit variables, are given
       promote(G) |- istp B
       G, (later) A |- future B[^1] ext M
 
+- `futureIntersectIntroOf A B M`
+
+      G |- of (future (intersect A (fn . B))) (next (M #prev))
+      >>
+      promote(G) |- istp A
+      promote(G), A |- istp B
+      G, (later) A |- of (future B) M[^1]
+
+- `futureIntersectIntroEq A B M N`
+
+      G |- eq (future (intersect A (fn . B))) (next (M #prev)) (next (N #prev))
+      >>
+      promote(G) |- istp A
+      promote(G), A |- istp B
+      G, (later) A |- eq (future B) M[^1] N[^1]
+
+- `futureIntersectIntro A B`
+
+      G |- future (intersect A (fn . B)) ext next (M[() . id] #prev)
+      >>
+      promote(G) |- istp A
+      promote(G), A |- istp B
+      G, (later hidden) A |- future B ext M
+
 
 
 ### Future functions
