@@ -458,6 +458,15 @@ Inductive tr : @context obj -> judgement -> Prop :=
       -> tr (cons (hyp_tml a) G) (deq (subst sh1 m) (subst sh1 n) (fut b))
       -> tr G (deq (next (prev m)) (next (prev n)) (fut (intersect a b)))
 
+| tr_fut_univ_surj :
+    forall G lv m,
+      tr G (deqtype
+              (squash (sigma (univ lv) (equal (fut (univ (subst sh1 lv))) (subst sh1 m) (next (var 0)))))
+              (squash (sigma (univ lv) (equal (fut (univ (subst sh1 lv))) (subst sh1 m) (next (var 0))))))
+      -> tr G (deq m m (fut (univ lv)))
+      -> tr G (deq triv triv
+                 (squash (sigma (univ lv) (equal (fut (univ (subst sh1 lv))) (subst sh1 m) (next (var 0))))))
+
 (* Semifut *)
 
 | tr_semifut_formation :

@@ -2307,6 +2307,13 @@ Human-readable rules, using explicit variables, are given
       promote(G), A |- istp B
       G, (later hidden) A |- future B ext M
 
+- `futureUnivSurj I M`
+
+      G |- squash (exists (univ I) (fn . eq (future (univ I[^1])) M[^1] (next 0)))
+      >>
+      G |- istp (squash (exists (univ I) (fn . eq (future (univ I[^1])) M[^1] (next 0))))
+      G |- of (future (univ I)) M
+
 
 
 ### Future functions

@@ -89,6 +89,7 @@ UNITS = \
 	SoundEqual \
 	SoundExist \
 	SoundFut \
+	SoundFutUniv \
 	SoundGuard \
 	SoundHyp \
 	SoundKind \

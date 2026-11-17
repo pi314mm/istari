@@ -2424,6 +2424,13 @@ promote x : A |- B : type ;
 x : demote hide A |- future B ext M ;
 
 
+rule futureUnivSurj
+squash (exists {x : Ui} (eq (future Ui) M (next $x)))
+>>
+|- squash (exists {x : Ui} (eq (future Ui) M (next $x))) : type ;
+|- M : future Ui ;
+
+
 
 (* Recursive types *)
 

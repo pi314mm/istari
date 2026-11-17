@@ -3073,6 +3073,15 @@
 \]
 
 \[
+\infer[{\tt futureUnivSurj}]{\Gamma \vdash {\sf squash}\,({\sf exists}\,{\Bbb U}_{I}\,(\lambda .\,M[\uparrow ]= {\sf next}\,0: {\sf future}\,{\Bbb U}_{I[\uparrow ]}))}{
+\begin{stack}
+\Gamma \vdash {\sf squash}\,({\sf exists}\,{\Bbb U}_{I}\,(\lambda .\,M[\uparrow ]= {\sf next}\,0: {\sf future}\,{\Bbb U}_{I[\uparrow ]})): {\sf type}
+\\
+\Gamma \vdash M: {\sf future}\,{\Bbb U}_{I}
+\end{stack}}
+\]
+
+\[
 \infer[{\tt recKind}]{\Gamma \vdash {\sf rec}\,(\lambda .\,K): {\Bbb K}_{I}}{
 \begin{stack}
 \Gamma \vdash I: {\sf level}

@@ -354,6 +354,7 @@ signature RULE_TACTIC =
       val futureIntersectIntroOf : tactic
       val futureIntersectIntroEq : tactic
       val futureIntersectIntro : tactic
+      val futureUnivSurj : tactic1                (* M *)
       val recKind : tactic
       val recKindEq : tactic
       val recForm : tactic
@@ -4322,6 +4323,12 @@ structure RuleTactic :> RULE_TACTIC =
                 chdir (D.bindsVary dir [binder [1, 2, ] (J.concl jud), ]),
                 chdir (D.bindsVary dir [binder [1, 2, ] (J.concl jud), ]),
                 ]
+         end
+
+      fun futureUnivSurj xM =
+         let
+         in
+            refine (Rule.futureUnivSurj (T.evar ()) xM)
          end
 
       val recKind =

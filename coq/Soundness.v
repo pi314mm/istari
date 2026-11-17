@@ -16,6 +16,7 @@ Require Import SoundEqtype.
 Require Import SoundEqual.
 Require Import SoundExist.
 Require Import SoundFut.
+Require Import SoundFutUniv.
 Require Import SoundGuard.
 Require Import SoundHyp.
 Require Import SoundKind.
@@ -119,6 +120,7 @@ intros; eapply sound_fut_eta_hyp; eauto; done.
 intros; eapply sound_fut_ext; eauto; done.
 intros; eapply sound_fut_tarrow_intro; eauto; done.
 intros; eapply sound_fut_intersect_intro; eauto; done.
+intros; eapply sound_fut_univ_surj; eauto; done.
 intros; eapply sound_semifut_formation; eauto; done.
 intros; eapply sound_semifut_formation_univ; eauto; done.
 intros; eapply sound_semifut_intro; eauto; done.

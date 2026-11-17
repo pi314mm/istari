@@ -599,3 +599,14 @@ simpsubin H.
 symmetry.
 auto.
 Qed.
+
+
+Hint Rewrite def_squash def_sigma def_univ : prepare.
+
+
+Lemma futureUnivSurj_valid : futureUnivSurj_obligation.
+Proof.
+prepare.
+intros G lv m ext1 ext0 HC Hm.
+apply tr_fut_univ_surj; auto.
+Qed.

@@ -2309,6 +2309,13 @@ variables.  The official rules, using de Bruijn indices, are given
       promote(G), x : A |- B : type
       G, x (later hidden) : A |- future B ext M
 
+- `futureUnivSurj I M`
+
+      G |- {exists (x : univ I) . M = next x : future (univ I)}
+      >>
+      G |- {exists (x : univ I) . M = next x : future (univ I)} : type
+      G |- M : future (univ I)
+
 
 
 ### Future functions
