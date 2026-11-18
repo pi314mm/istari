@@ -2431,6 +2431,14 @@ squash (exists {x : Ui} (eq (future Ui) M (next $x)))
 |- M : future Ui ;
 
 
+rule futureArrowUnivSurj
+squash (exists {x : (arrow A Ui)} (eq (future (arrow A Ui)) M (next $x)))
+>>
+|- A : Ui ;
+|- squash (exists {x : (arrow A Ui)} (eq (future (arrow A Ui)) M (next $x))) : type ;
+|- M : future (arrow A Ui) ;
+
+
 
 (* Recursive types *)
 

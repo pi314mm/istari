@@ -2314,6 +2314,14 @@ Human-readable rules, using explicit variables, are given
       G |- istp (squash (exists (univ I) (fn . eq (future (univ I[^1])) M[^1] (next 0))))
       G |- of (future (univ I)) M
 
+- `futureArrowUnivSurj A I M`
+
+      G |- squash (exists (arrow A (univ I)) (fn . eq (future (arrow A[^1] (univ I[^1]))) M[^1] (next 0)))
+      >>
+      G |- of (univ I) A
+      G |- istp (squash (exists (arrow A (univ I)) (fn . eq (future (arrow A[^1] (univ I[^1]))) M[^1] (next 0))))
+      G |- of (future (arrow A (univ I))) M
+
 
 
 ### Future functions

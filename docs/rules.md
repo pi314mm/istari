@@ -2316,6 +2316,14 @@ variables.  The official rules, using de Bruijn indices, are given
       G |- {exists (x : univ I) . M = next x : future (univ I)} : type
       G |- M : future (univ I)
 
+- `futureArrowUnivSurj A I M`
+
+      G |- {exists (x : A -> univ I) . M = next x : future (A -> univ I)}
+      >>
+      G |- A : univ I
+      G |- {exists (x : A -> univ I) . M = next x : future (A -> univ I)} : type
+      G |- M : future (A -> univ I)
+
 
 
 ### Future functions

@@ -355,6 +355,7 @@ signature RULE_TACTIC =
       val futureIntersectIntroEq : tactic
       val futureIntersectIntro : tactic
       val futureUnivSurj : tactic1                (* M *)
+      val futureArrowUnivSurj : tactic1           (* M *)
       val recKind : tactic
       val recKindEq : tactic
       val recForm : tactic
@@ -4329,6 +4330,12 @@ structure RuleTactic :> RULE_TACTIC =
          let
          in
             refine (Rule.futureUnivSurj (T.evar ()) xM)
+         end
+
+      fun futureArrowUnivSurj xM =
+         let
+         in
+            refine (Rule.futureArrowUnivSurj (T.evar ()) (T.evar ()) xM)
          end
 
       val recKind =

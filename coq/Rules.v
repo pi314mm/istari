@@ -467,6 +467,19 @@ Inductive tr : @context obj -> judgement -> Prop :=
       -> tr G (deq triv triv
                  (squash (sigma (univ lv) (equal (fut (univ (subst sh1 lv))) (subst sh1 m) (next (var 0))))))
 
+| tr_fut_arrow_univ_surj :
+    forall G a lv m,
+      tr G (deq a a (univ lv))
+      -> tr G (deqtype
+                 (squash (sigma (pi a (univ (subst sh1 lv)))
+                            (equal (fut (pi (subst sh1 a) (univ (subst (sh 2) lv)))) (subst sh1 m) (next (var 0)))))
+                 (squash (sigma (pi a (univ (subst sh1 lv)))
+                            (equal (fut (pi (subst sh1 a) (univ (subst (sh 2) lv)))) (subst sh1 m) (next (var 0))))))
+      -> tr G (deq m m (fut (pi a (univ (subst sh1 lv)))))
+      -> tr G (deq triv triv
+                 (squash (sigma (pi a (univ (subst sh1 lv)))
+                            (equal (fut (pi (subst sh1 a) (univ (subst (sh 2) lv)))) (subst sh1 m) (next (var 0))))))
+
 (* Semifut *)
 
 | tr_semifut_formation :

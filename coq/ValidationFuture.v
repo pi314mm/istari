@@ -642,3 +642,64 @@ prepare.
 intros G' lv' m' ext1' ext0' HC' Hm'.
 apply tr_fut_univ_surj; auto.
 Qed.
+
+
+Lemma def_arrow_univ :
+  forall (a lv : term obj),
+    equiv (app (app Defs.arrow a) (app Defs.univ lv)) (pi a (univ (subst sh1 lv))).
+Proof.
+intros a lv.
+eapply equiv_trans.
+  {
+  apply equiv_app; [apply equiv_refl | apply def_univ].
+  }
+eapply equiv_trans; [apply def_arrow |].
+simpsub.
+apply equiv_refl.
+Qed.
+
+
+Lemma def_arrow_univ_surj_type :
+  forall (a lv m : term obj),
+    equiv
+      (app Defs.squash
+         (app (app Defs.sigma (app (app Defs.arrow a) (app Defs.univ lv)))
+            (lam (app (app (app Defs.eq (app Defs.future (app (app Defs.arrow (subst (sh 1) a)) (app Defs.univ (subst (sh 1) lv)))))
+                         (subst (sh 1) m))
+                    (next (var 0))))))
+      (Defined.squash (sigma (pi a (univ (subst sh1 lv)))
+                         (equal (fut (pi (subst sh1 a) (univ (subst (sh 2) lv)))) (subst sh1 m) (next (var 0))))).
+Proof.
+intros a lv m.
+eapply equiv_trans; [apply def_squash |].
+unfold Defined.squash.
+apply equiv_set; [apply equiv_refl |].
+apply equiv_subst.
+eapply equiv_trans.
+  {
+  apply equiv_app; [apply equiv_app; [apply equiv_refl | apply def_arrow_univ] |].
+  apply equiv_lam.
+  eapply equiv_trans; [apply def_eq |].
+  apply equiv_equal; [| apply equiv_refl | apply equiv_refl].
+  eapply equiv_trans; [apply def_fut |].
+  apply equiv_fut.
+  apply def_arrow_univ.
+  }
+eapply equiv_trans; [apply def_sigma |].
+simpsub.
+apply equiv_refl.
+Qed.
+
+
+Lemma futureArrowUnivSurj_valid : futureArrowUnivSurj_obligation.
+Proof.
+unfoldtop.
+unfold Defs.dof.
+intros G a lv m ext2 ext1 ext0 Ha HC Hm.
+(* As for futureUnivSurj, the type is converted as a whole first. *)
+rewrite -> def_arrow_univ_surj_type in HC |- *.
+rewrite -> def_arrow_univ in Hm.
+prepare.
+intros G' a' lv' m' ext2' ext1' ext0' Ha' HC' Hm'.
+apply tr_fut_arrow_univ_surj; auto.
+Qed.

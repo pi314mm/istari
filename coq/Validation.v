@@ -480,6 +480,7 @@ exact futureIntersectIntroOf_valid.
 exact futureIntersectIntroEq_valid.
 exact futureIntersectIntro_valid.
 exact futureUnivSurj_valid.
+exact futureArrowUnivSurj_valid.
 exact recKind_valid.
 exact recKindEq_valid.
 exact recForm_valid.
